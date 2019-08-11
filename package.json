@@ -1,0 +1,22 @@
+{
+  "name": "thezeus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "eslint": "^6.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthew-the-equine/thezeus.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matthew-the-equine/thezeus/issues"
+  },
+  "homepage": "https://github.com/matthew-the-equine/thezeus#readme"
+}
