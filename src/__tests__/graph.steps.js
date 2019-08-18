@@ -1,4 +1,3 @@
-// features/support/steps.js
 import { Given, When, Then } from 'cucumber'
 import { expect } from 'chai'
 import Graph from '../graph'
