@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
     "babel-eslint": "^10.0.2",
     "eslint": "^6.1.0",
     "mocha": "^6.2.0"
   },
   "scripts": {
-    "test": "mocha ./src/**/*.test.*"
+    "test": "mocha ./src/**/*.test.*",
+    "gherkin": "./node_modules/.bin/cucumber-js --require-module @babel/register ./src/__tests__"
   },
   "repository": {
     "type": "git",
@@ -20,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/matthew-the-equine/thezeus/issues"
   },
-  "homepage": "https://github.com/matthew-the-equine/thezeus#readme"
+  "homepage": "https://github.com/matthew-the-equine/thezeus#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "cucumber": "^5.1.0"
+  }
 }
