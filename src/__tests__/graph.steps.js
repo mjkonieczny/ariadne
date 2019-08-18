@@ -12,6 +12,18 @@ When('I add vertex {int}', (vertex) => {
   graph.addVertex(vertex)
 })
 
-Then('should be {int} vertices', (number) => {
-  expect(graph.v.length).equal(number)
+When('I add edge {int} from {int} to {int}', (edge, from, to) => {
+  graph.addEdge({
+    edge,
+    from,
+    to
+  })
+})
+
+Then('should be {int} vertices', (expected) => {
+  expect(Object.keys(graph.adjacents).length).equal(expected)
+})
+
+Then('vertex {int} should have {int} edges', (vertex, expected) => {
+  expect(graph.adjacents[vertex].length).equal(expected)
 })

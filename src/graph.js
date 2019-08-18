@@ -1,12 +1,17 @@
 
+
 class Graph {
   constructor() {
-    this.v = {}
-    this.e = {}
+    this.adjacents = {}
   }
 
   addVertex = (vertex) => {
-    this.v = [vertex]
+    this.adjacents[vertex] = []
+  }
+
+  addEdge = (edge) => {
+    this.adjacents[edge.from] = [...this.adjacents[edge.from], edge]
+    this.adjacents[edge.to] = [...this.adjacents[edge.to], edge]
   }
 }
 
