@@ -1,5 +1,3 @@
-
-
 class Graph {
   constructor() {
     this.adjacents = {}
@@ -10,8 +8,8 @@ class Graph {
   }
 
   addEdge = (edge) => {
-    this.adjacents[edge.from] = [...this.adjacents[edge.from], edge]
-    this.adjacents[edge.to] = [...this.adjacents[edge.to], edge]
+    this.adjacents[edge.from].push(edge)
+    this.adjacents[edge.to].push(edge)
   }
 }
 
