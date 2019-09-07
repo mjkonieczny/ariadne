@@ -1,29 +1,33 @@
-import { Given, When, Then } from 'cucumber'
+import { Given, Then, defineParameterType } from 'cucumber'
 import { expect } from 'chai'
-import Graph from '../graph'
+import { deserialize } from '../graphSerializer'
+
+defineParameterType({
+  name: 'array',
+  regexp: /(?:\d+,)*\d+/,
+  transformer: string => string.split(',').map(Number)
+})
 
 let graph
 
-Given('undirected graph', () => {
-  graph = new Graph()
+Given('undirected {string} graph', (graphName) => {
+  graph = deserialize(`${__dirname}/examples/${graphName}.json`)
 })
 
-When('I add vertex {int}', (vertex) => {
-  graph.addVertex(vertex)
+Then('should have {int} vertices', (expected) => {
+  expect(
+    Object.keys(graph.V).length
+  ).equals(expected)
 })
 
-When('I add edge {int} from {int} to {int}', (edge, from, to) => {
-  graph.addEdge({
-    edge,
-    from,
-    to
-  })
+Then('should have {int} edges', (expected) => {
+  expect(
+    Object.keys(graph.E).length
+  ).equals(expected)
 })
 
-Then('should be {int} vertices', (expected) => {
-  expect(Object.keys(graph.adjacents).length).equal(expected)
-})
-
-Then('vertex {int} should have {int} edges', (vertex, expected) => {
-  expect(graph.adjacents[vertex].length).equal(expected)
+Then('adjacent of vertex {int} should be {array}', (vertex, expected) => {
+  expect(
+    graph.adj(vertex)
+  ).members(expected)
 })

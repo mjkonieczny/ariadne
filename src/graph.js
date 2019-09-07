@@ -1,18 +1,10 @@
-
-
-class Graph {
-  constructor() {
-    this.adjacents = {}
+const graph = (graph) => ({
+  ...graph,
+  adj: (v) => {
+    return Object.entries(graph.phi)
+      .filter(([, { from, to }]) => from === v || to === v)
+      .map(([, { from, to }]) => from === v ? to : from)
   }
+})
 
-  addVertex = (vertex) => {
-    this.adjacents[vertex] = []
-  }
-
-  addEdge = (edge) => {
-    this.adjacents[edge.from] = [...this.adjacents[edge.from], edge]
-    this.adjacents[edge.to] = [...this.adjacents[edge.to], edge]
-  }
-}
-
-export default Graph
+export default graph

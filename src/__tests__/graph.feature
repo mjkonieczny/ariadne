@@ -1,13 +1,12 @@
 Feature: Graph
 
-  Scenario:
-    Given undirected graph
-    When I add vertex 1
-    Then should be 1 vertices
-  
-  Scenario:
-    Given undirected graph
-    And I add vertex 1
-    And I add vertex 2
-    When I add edge 1 from 1 to 2
-    Then vertex 1 should have 1 edges
+  Scenario Outline:  deserialize <graphName> graph
+    Given undirected <graphName> graph
+    Then should have <v> vertices
+    And should have <e> edges
+    And adjacent of vertex 4 should be <adj>
+
+    Examples:
+      | graphName | v  | e  | adj     |
+      | 'tinyG'   | 13 | 14 | 3,5,6   |
+      | 'tinyEWG' | 8  | 16 | 0,5,6,7 |
