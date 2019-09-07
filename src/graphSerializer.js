@@ -1,4 +1,5 @@
 import fs from 'fs'
+import graph from './graph'
 
 const deserialize = (path) => {
   const buffer = fs.readFileSync(path, (err, buffer) => {
@@ -10,7 +11,7 @@ const deserialize = (path) => {
   })
 
   try {
-    return JSON.parse(buffer)
+    return graph(JSON.parse(buffer))
   }
   catch(err) {
     console.log('Error parsing JSON buffer', err)

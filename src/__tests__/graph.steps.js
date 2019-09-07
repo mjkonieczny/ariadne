@@ -1,24 +1,18 @@
-import { Given, Then } from 'cucumber'
+import { Given, Then, defineParameterType } from 'cucumber'
 import { expect } from 'chai'
 import { deserialize } from '../graphSerializer'
 
-let graph
-
-Given('undirected graph', () => {
-  graph = deserialize(`${__dirname}/examples/tinyG.json`)
+defineParameterType({
+  name: 'array',
+  regexp: /(?:\d+,)*\d+/,
+  transformer: string => string.split(',').map(Number)
 })
 
-// When('I add vertex {int}', (vertex) => {
-//   graph.addVertex(vertex)
-// })
+let graph
 
-// When('I add edge {int} from {int} to {int}', (edge, from, to) => {
-//   graph.addEdge({
-//     edge,
-//     from,
-//     to
-//   })
-// })
+Given('undirected {string} graph', (graphName) => {
+  graph = deserialize(`${__dirname}/examples/${graphName}.json`)
+})
 
 Then('should have {int} vertices', (expected) => {
   expect(
@@ -32,10 +26,8 @@ Then('should have {int} edges', (expected) => {
   ).equals(expected)
 })
 
-Then('vertex {int} should have {int} edges', (vertex, expected) => {
+Then('adjacent of vertex {int} should be {array}', (vertex, expected) => {
   expect(
-    Object.entries(graph.phi)
-      .filter(([, { from, to }]) => from === vertex || to === vertex)
-      .length
-  ).equals(expected)
+    graph.adj(vertex)
+  ).members(expected)
 })
