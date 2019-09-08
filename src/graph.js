@@ -1,3 +1,5 @@
+import { other } from './edge'
+
 const adj = (graph, vertex) => {
   return Object.entries(graph.phi)
     .filter(([, { from, to }]) => from === vertex || to === vertex)
@@ -13,14 +15,13 @@ const iterate = (graph, vertex, data) => {
   const { marker, unmarked, marked } = data
 
   edges(graph, vertex).forEach(edge => {
-    const { from ,to } = edge
-    const other = from === vertex ? to : from
+    const to = other(edge, vertex)
 
-    if (marker.includes(other)) {
-      marked && marked(other, edge)
+    if (marker.includes(to)) {
+      marked && marked(to, edge)
     } else {
-      marker.push(other)
-      unmarked && unmarked(other, edge)
+      marker.push(to)
+      unmarked && unmarked(to, edge)
     }
   })
 }
