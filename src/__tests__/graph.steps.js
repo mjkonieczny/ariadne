@@ -20,8 +20,8 @@ Given('undirected {string} graph', graphName => {
 })
 
 let firstPaths
-When('first paths from {int}', s => {
-  firstPaths = graph.firstPaths(s)
+When('first paths from {int}', source => {
+  firstPaths = graph.firstPaths(source)
 })
 
 Then('should have {int} vertices', expected => {
@@ -42,8 +42,8 @@ Then('adjacent of vertex {int} should be {array}', (vertex, expected) => {
   ).members(expected)
 })
 
-Then('should has path to {int} is {boolean}', (t, expected) => {
+Then('should has path to {int} is {boolean}', (target, expected) => {
   expect(
-    firstPaths.hasPathTo(t)
+    firstPaths.hasPathTo(target)
   ).equals(expected)
 })

@@ -1,72 +1,72 @@
-const adj = (g, v) => {
-  return Object.entries(g.phi)
-    .filter(([, { from, to }]) => from === v || to === v)
-    .map(([, { from, to }]) => from === v ? to : from)
+const adj = (graph, vertex) => {
+  return Object.entries(graph.phi)
+    .filter(([, { from, to }]) => from === vertex || to === vertex)
+    .map(([, { from, to }]) => from === vertex ? to : from)
 }
-const edges = (g, v) => {
-  return Object.entries(g.phi)
-    .filter(([, { from, to }]) => from === v || to === v)
+const edges = (graph, vertex) => {
+  return Object.entries(graph.phi)
+    .filter(([, { from, to }]) => from === vertex || to === vertex)
     .map(([, edge]) => edge)
 }
 
-const iterate = (g, v, data) => {
+const iterate = (graph, vertex, data) => {
   const { marker, unmarked, marked } = data
 
-  edges(g, v).forEach(e => {
-    const { from ,to } = e
-    const other = from === v ? to : from
+  edges(graph, vertex).forEach(edge => {
+    const { from ,to } = edge
+    const other = from === vertex ? to : from
 
     if (marker.includes(other)) {
-      marked && marked(other, e)
+      marked && marked(other, edge)
     } else {
       marker.push(other)
-      unmarked && unmarked(other, e)
+      unmarked && unmarked(other, edge)
     }
   })
 }
 
-const depth = (g, s, data) => {
+const depth = (graph, source, data) => {
   const { marker, unmarked, marked, pre, post } = data
 
-  pre && pre(s)
-  marker.push(s)
+  pre && pre(source)
+  marker.push(source)
 
-  iterate(g, s, {
+  iterate(graph, source, {
     marker,
-    unmarked: (v, e) => {
-      unmarked(v, e)
-      depth(g, v, data)
+    unmarked: (vertex, edge) => {
+      unmarked(vertex, edge)
+      depth(graph, vertex, data)
     },
     marked
   })
 
-  post && post(s)
+  post && post(source)
 
   return this
 }
 
-const firstPaths = (g, s) => {
+const firstPaths = (graph, source) => {
   const edgeTo = {}
 
-  depth(g, s, ({
+  depth(graph, source, ({
     marker: [],
-    unmarked: (v, e) => { 
-      edgeTo[v] = e
+    unmarked: (vertex, edge) => { 
+      edgeTo[vertex] = edge
     }
   }))
 
   return {
-    hasPathTo: t => t in edgeTo
+    hasPathTo: target => target in edgeTo
   }
 }
 
-const graph = g => ({
-  ...g,
-  adj: v => adj(g, v),
-  edges: v => edges(g, v),
-  iterate: (v, data) => iterate(g, v, data),
-  depth: (v, data) => depth(g, v, data),
-  firstPaths: s => firstPaths(g, s)
+const graph = graph => ({
+  ...graph,
+  adj: vertex => adj(graph, vertex),
+  edges: vertex => edges(graph, vertex),
+  iterate: (vertex, data) => iterate(graph, vertex, data),
+  depth: (source, data) => depth(graph, source, data),
+  firstPaths: source => firstPaths(graph, source)
 })
 
 export default graph
