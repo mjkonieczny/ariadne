@@ -27,3 +27,6 @@ rules:
   arrow-parens:
     - error
     - as-needed
+  eol-last:
+    - error
+    - always

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import graph from './graph'
 
-const deserialize = (path) => {
+const deserialize = path => {
   const buffer = fs.readFileSync(path, (err, buffer) => {
     if (err) {
       console.log('File read failed', err)
