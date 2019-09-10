@@ -40,18 +40,47 @@ const depth = (graph, source, data) => {
 
   post && post(source)
 
-  return this
+  return graph
 }
 
-const firstPaths = (graph, source) => {
-  const edgeTo = {}
+const breadth = (graph, source, data) => {
+  const queue = []
+  const { marker, unmarked, marked } = data
 
-  depth(graph, source, ({
+  queue.push(source)
+  marker.push(source)
+
+  while (queue.length) {
+    const next = queue.pop()
+
+    iterate(graph, next, {
+      marker,
+      unmarked: (vertex, edge) => {
+        queue.push(vertex)
+        unmarked(vertex, edge)
+      },
+      marked
+    })
+  }
+
+  return graph
+}
+
+const firstPaths = (graph, source, iterator) => {
+  const edgeTo = {}
+  const data = ({
     marker: [],
-    unmarked: (vertex, edge) => { 
+    unmarked: (vertex, edge) => {
       edgeTo[vertex] = edge
     }
-  }))
+  })
+
+  switch (iterator) {
+  case 'breadth': breadth(graph, source, data)
+    break
+  case 'depth': depth(graph, source, data)
+    break
+  }
 
   return {
     hasPathTo: target => target in edgeTo
@@ -64,7 +93,7 @@ const graph = graph => ({
   edges: vertex => edges(graph, vertex),
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
-  firstPaths: source => firstPaths(graph, source)
+  firstPaths: (source, iterator) => firstPaths(graph, source, iterator)
 })
 
 export default graph

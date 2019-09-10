@@ -8,16 +8,19 @@ Feature: Graph
 
     Examples:
       | graphName | v  | e  | adj     |
-      | 'tinyG'   | 13 | 14 | 3,5,6   |
-      | 'tinyEWG' | 8  | 16 | 0,5,6,7 |
+      | "tinyG"   | 13 | 14 | 3,5,6   |
+      | "tinyEWG" | 8  | 16 | 0,5,6,7 |
 
   Scenario Outline: first paths
     Given undirected <graphName> graph
-    When first paths from <s>
+    When <iterator> first paths from <s>
     Then should has path to <t> is <hasPath>
 
     Examples:
-      | graphName | s | t | hasPath |
-      | 'tinyG'   | 1 | 2 | true    |
-      | 'tinyG'   | 2 | 3 | true    |
-      | 'tinyG'   | 2 | 7 | false   |
+      | graphName | iterator  | s | t | hasPath |
+      | "tinyG"   | "breadth" | 1 | 2 | true    |
+      | "tinyG"   | "breadth" | 2 | 3 | true    |
+      | "tinyG"   | "breadth" | 2 | 7 | false   |
+      | "tinyG"   | "depth"   | 1 | 2 | true    |
+      | "tinyG"   | "depth"   | 2 | 3 | true    |
+      | "tinyG"   | "depth"   | 2 | 7 | false   |

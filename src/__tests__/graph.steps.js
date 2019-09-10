@@ -20,8 +20,8 @@ Given('undirected {string} graph', graphName => {
 })
 
 let firstPaths
-When('first paths from {int}', source => {
-  firstPaths = graph.firstPaths(source)
+When('{string} first paths from {int}', (iterator, source) => {
+  firstPaths = graph.firstPaths(source, iterator)
 })
 
 Then('should have {int} vertices', expected => {
