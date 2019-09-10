@@ -38,7 +38,7 @@ Then('should have {int} edges', expected => {
 
 Then('adjacent of vertex {int} should be {array}', (vertex, expected) => {
   expect(
-    graph.adj(vertex)
+    graph.adjacent(vertex)
   ).members(expected)
 })
 

@@ -1,14 +1,11 @@
 import { other } from './edge'
 
-const adj = (graph, vertex) => {
-  return Object.entries(graph.phi)
-    .filter(([, { from, to }]) => from === vertex || to === vertex)
-    .map(([, { from, to }]) => from === vertex ? to : from)
-}
 const edges = (graph, vertex) => {
-  return Object.entries(graph.phi)
-    .filter(([, { from, to }]) => from === vertex || to === vertex)
-    .map(([, edge]) => edge)
+  return graph.adj[vertex].map(v => graph.phi[v])
+}
+
+const adjacent = (graph, vertex) => {
+  return edges(graph, vertex).map(edge => other(edge, vertex))
 }
 
 const iterate = (graph, vertex, data) => {
@@ -63,7 +60,7 @@ const firstPaths = (graph, source) => {
 
 const graph = graph => ({
   ...graph,
-  adj: vertex => adj(graph, vertex),
+  adjacent: vertex => adjacent(graph, vertex),
   edges: vertex => edges(graph, vertex),
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
