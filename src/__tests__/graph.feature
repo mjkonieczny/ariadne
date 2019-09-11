@@ -31,3 +31,16 @@ Feature: Graph
       | "tinyDG"  | "depth"   | 2      | 1      | true    | 2,0,1     |
       | "tinyDG"  | "depth"   | 0      | 3      | true    | 0,5,4,2,3 |
       | "tinyDG"  | "depth"   | 2      | 7      | false   | null      |
+
+  Scenario Outline: degree of separation between <source> and <target>
+    Given <graphName> graph
+    Then degree of separation between <source> and <target> is <degreeOfSeparation>
+
+    Examples:
+      | graphName | source | target | degreeOfSeparation |
+      | "tinyG"   | 1      | 2      | 2                  |
+      | "tinyG"   | 2      | 3      | 3                  |
+      | "tinyG"   | 3      | 12     | -1                 |
+      | "tinyDG"  | 0      | 12     | -1                 |
+      | "tinyDG"  | 12     | 0      | 5                  |
+      | "tinyDG"  | 8      | 1      | 3                  |

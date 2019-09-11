@@ -52,3 +52,7 @@ Then('path to {int} should be {array}', (target, expected) => {
   const result = firstPaths.pathTo(target)
   expected ? expect(result).members(expected) : expect(result).null
 })
+
+Then('degree of separation between {int} and {int} is {int}', (source, target, expected) => {
+  expect(graph.degreeOfSeparation(source, target)).equals(expected)
+})
