@@ -24,6 +24,11 @@ When('{string} first paths from {int}', (iterator, source) => {
   firstPaths = graph.firstPaths(source, iterator)
 })
 
+let depthFirstOrder
+When('depth first order', () => {
+  depthFirstOrder = graph.depthFirstOrder()
+})
+
 Then('should have {int} vertices', expected => {
   expect(
     Object.keys(graph.V).length
@@ -51,4 +56,10 @@ Then('should has path to {int} is {boolean}', (target, expected) => {
 Then('path to {int} should be {array}', (target, expected) => {
   const result = firstPaths.pathTo(target)
   expected ? expect(result).members(expected) : expect(result).null
+})
+
+Then('{string} order is {array}', (order, expected) => {
+  expect(
+    depthFirstOrder[order]
+  ).ordered.members(expected)
 })

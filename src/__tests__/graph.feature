@@ -31,3 +31,10 @@ Feature: Graph
       | "tinyDG"  | "depth"   | 2      | 1      | true    | 2,0,1     |
       | "tinyDG"  | "depth"   | 0      | 3      | true    | 0,5,4,2,3 |
       | "tinyDG"  | "depth"   | 2      | 7      | false   | null      |
+
+  Scenario: depth first order
+    Given "tinyDGnc" graph
+    When depth first order
+    Then "pre" order is 0,1,5,4,2,3,6,9,12,10,11,7,8
+    And "post" order is 1,4,5,0,3,2,12,10,11,9,6,7,8
+    And "reversePost" order is 8,7,6,9,11,10,12,2,3,0,5,4,1

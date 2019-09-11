@@ -32,7 +32,7 @@ const depth = (graph, source, data) => {
   iterate(graph, source, {
     marker,
     unmarked: (vertex, edge) => {
-      unmarked(vertex, edge)
+      unmarked && unmarked(vertex, edge)
       depth(graph, vertex, data)
     },
     marked
@@ -57,7 +57,7 @@ const breadth = (graph, source, data) => {
       marker,
       unmarked: (vertex, edge) => {
         queue.push(vertex)
-        unmarked(vertex, edge)
+        unmarked && unmarked(vertex, edge)
       },
       marked
     })
@@ -102,13 +102,35 @@ const firstPaths = (graph, source, iterator) => {
   }
 }
 
+const depthFirstOrder = graph => {
+  const marker = [], pre = [], post = []
+
+  graph.V.forEach(source => {
+    if (!marker.includes(source)) {
+      marker.push(source)
+      depth(graph, source, {
+        marker,
+        pre: vertex => pre.push(vertex),
+        post: vertex => post.push(vertex)
+      })
+    }
+  })
+
+  return {
+    pre,
+    post,
+    reversePost: post.slice().reverse()
+  }
+}
+
 const graph = graph => ({
   ...graph,
   adjacent: vertex => adjacent(graph, vertex),
   edges: vertex => edges(graph, vertex),
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
-  firstPaths: (source, iterator) => firstPaths(graph, source, iterator)
+  firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
+  depthFirstOrder: () => depthFirstOrder(graph)
 })
 
 export default graph
