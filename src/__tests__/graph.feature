@@ -8,7 +8,7 @@ Feature: Graph
 
     Examples:
       | graphName | v  | e  | adjacent |
-      | "tinyG"   | 13 | 14 | 3,5,6    |
+      | "tinyG"   | 13 | 13 | 3,5,6    |
       | "tinyEWG" | 8  | 16 | 0,5,6,7  |
 
   Scenario Outline: first paths

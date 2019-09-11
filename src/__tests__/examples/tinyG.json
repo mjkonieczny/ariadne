@@ -27,8 +27,7 @@
     10,
     11,
     12,
-    13,
-    14
+    13
   ],
   "phi": {
     "1": {
@@ -46,52 +45,52 @@
       "to": 1,
       "type": "undirected"
     },
-    "5": {
+    "4": {
       "from": 9,
       "to": 12,
       "type": "undirected"
     },
-    "6": {
+    "5": {
       "from": 6,
       "to": 4,
       "type": "undirected"
     },
-    "7": {
+    "6": {
       "from": 5,
       "to": 4,
       "type": "undirected"
     },
-    "8": {
+    "7": {
       "from": 0,
       "to": 2,
       "type": "undirected"
     },
-    "9": {
+    "8": {
       "from": 11,
       "to": 12,
       "type": "undirected"
     },
-    "10": {
+    "9": {
       "from": 9,
       "to": 10,
       "type": "undirected"
     },
-    "11": {
+    "10": {
       "from": 0,
       "to": 6,
       "type": "undirected"
     },
-    "12": {
+    "11": {
       "from": 7,
       "to": 8,
       "type": "undirected"
     },
-    "13": {
+    "12": {
       "from": 9,
       "to": 11,
       "type": "undirected"
     },
-    "14": {
+    "13": {
       "from": 5,
       "to": 3,
       "type": "undirected"
