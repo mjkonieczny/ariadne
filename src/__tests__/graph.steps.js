@@ -4,8 +4,8 @@ import { deserialize } from '../graphSerializer'
 
 defineParameterType({
   name: 'array',
-  regexp: /(?:\d+,)*\d+/,
-  transformer: string => string.split(',').map(Number)
+  regexp: /((?:\d+,)*\d+)|null/,
+  transformer: string => string ? string.split(',').map(Number) : null
 })
 
 defineParameterType({
@@ -46,4 +46,9 @@ Then('should has path to {int} is {boolean}', (target, expected) => {
   expect(
     firstPaths.hasPathTo(target)
   ).equals(expected)
+})
+
+Then('path to {int} should be {array}', (target, expected) => {
+  const result = firstPaths.pathTo(target)
+  expected ? expect(result).members(expected) : expect(result).null
 })

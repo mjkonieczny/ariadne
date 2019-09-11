@@ -51,7 +51,7 @@ const breadth = (graph, source, data) => {
   marker.push(source)
 
   while (queue.length) {
-    const next = queue.pop()
+    const next = queue.shift()
 
     iterate(graph, next, {
       marker,
@@ -66,12 +66,24 @@ const breadth = (graph, source, data) => {
   return graph
 }
 
+const pathTo = (edgeTo, source, target) => {
+  const path = []
+
+  for (let vertex = target; vertex !== source; vertex = edgeTo[vertex]) {
+    path.push(vertex)
+  }
+
+  path.push(source)
+
+  return path.reverse()
+}
+
 const firstPaths = (graph, source, iterator) => {
   const edgeTo = {}
   const data = ({
     marker: [],
     unmarked: (vertex, edge) => {
-      edgeTo[vertex] = edge
+      edgeTo[vertex] = other(edge, vertex)
     }
   })
 
@@ -82,8 +94,11 @@ const firstPaths = (graph, source, iterator) => {
     break
   }
 
+  const hasPathTo = target => target in edgeTo
+
   return {
-    hasPathTo: target => target in edgeTo
+    hasPathTo,
+    pathTo: target => hasPathTo(target) ? pathTo(edgeTo, source, target) : null
   }
 }
 
