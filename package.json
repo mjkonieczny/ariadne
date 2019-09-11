@@ -13,6 +13,7 @@
     "mocha": "^6.2.0"
   },
   "scripts": {
+    "lint": "eslint **/*.js --ignore-pattern node_modules/",
     "test": "mocha ./src/**/*.test.*",
     "gherkin": "./node_modules/.bin/cucumber-js --require-module @babel/register ./src/__tests__"
   },

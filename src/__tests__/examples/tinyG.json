@@ -27,61 +27,73 @@
     10,
     11,
     12,
-    13,
-    14
+    13
   ],
   "phi": {
     "1": {
       "from": 0,
-      "to": 5
+      "to": 5,
+      "type": "undirected"
     },
     "2": {
       "from": 4,
-      "to": 3
+      "to": 3,
+      "type": "undirected"
     },
     "3": {
       "from": 0,
-      "to": 1
+      "to": 1,
+      "type": "undirected"
+    },
+    "4": {
+      "from": 9,
+      "to": 12,
+      "type": "undirected"
     },
     "5": {
-      "from": 9,
-      "to": 12
+      "from": 6,
+      "to": 4,
+      "type": "undirected"
     },
     "6": {
-      "from": 6,
-      "to": 4
+      "from": 5,
+      "to": 4,
+      "type": "undirected"
     },
     "7": {
-      "from": 5,
-      "to": 4
+      "from": 0,
+      "to": 2,
+      "type": "undirected"
     },
     "8": {
-      "from": 0,
-      "to": 2
+      "from": 11,
+      "to": 12,
+      "type": "undirected"
     },
     "9": {
-      "from": 11,
-      "to": 12
+      "from": 9,
+      "to": 10,
+      "type": "undirected"
     },
     "10": {
-      "from": 9,
-      "to": 10
+      "from": 0,
+      "to": 6,
+      "type": "undirected"
     },
     "11": {
-      "from": 0,
-      "to": 6
+      "from": 7,
+      "to": 8,
+      "type": "undirected"
     },
     "12": {
-      "from": 7,
-      "to": 8
+      "from": 9,
+      "to": 11,
+      "type": "undirected"
     },
     "13": {
-      "from": 9,
-      "to": 11
-    },
-    "14": {
       "from": 5,
-      "to": 3
+      "to": 3,
+      "type": "undirected"
     }
   }
 }

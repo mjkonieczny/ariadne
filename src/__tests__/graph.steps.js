@@ -1,26 +1,36 @@
-import { Given, Then, defineParameterType } from 'cucumber'
+import { Given, When, Then, defineParameterType } from 'cucumber'
 import { expect } from 'chai'
 import { deserialize } from '../graphSerializer'
 
 defineParameterType({
   name: 'array',
-  regexp: /(?:\d+,)*\d+/,
-  transformer: string => string.split(',').map(Number)
+  regexp: /((?:\d+,)*\d+)|null/,
+  transformer: string => string ? string.split(',').map(Number) : null
+})
+
+defineParameterType({
+  name: 'boolean',
+  regexp: /true|false/,
+  transformer: string => string === 'true'
 })
 
 let graph
-
-Given('undirected {string} graph', (graphName) => {
+Given('{string} graph', graphName => {
   graph = deserialize(`${__dirname}/examples/${graphName}.json`)
 })
 
-Then('should have {int} vertices', (expected) => {
+let firstPaths
+When('{string} first paths from {int}', (iterator, source) => {
+  firstPaths = graph.firstPaths(source, iterator)
+})
+
+Then('should have {int} vertices', expected => {
   expect(
     Object.keys(graph.V).length
   ).equals(expected)
 })
 
-Then('should have {int} edges', (expected) => {
+Then('should have {int} edges', expected => {
   expect(
     Object.keys(graph.E).length
   ).equals(expected)
@@ -28,6 +38,17 @@ Then('should have {int} edges', (expected) => {
 
 Then('adjacent of vertex {int} should be {array}', (vertex, expected) => {
   expect(
-    graph.adj(vertex)
+    graph.adjacent(vertex)
   ).members(expected)
+})
+
+Then('should has path to {int} is {boolean}', (target, expected) => {
+  expect(
+    firstPaths.hasPathTo(target)
+  ).equals(expected)
+})
+
+Then('path to {int} should be {array}', (target, expected) => {
+  const result = firstPaths.pathTo(target)
+  expected ? expect(result).members(expected) : expect(result).null
 })
