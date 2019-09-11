@@ -4,14 +4,13 @@ import graph from './graph'
 const adj = graph => ({
   ...graph,
   adj: Object.entries(graph.phi).reduce((adj, [edge, { from, to, type }]) => {
-    if (!adj[from]) adj[from] = []
     adj[from].push(edge)
-    if (type === 'undirected') {
-      if (!adj[to]) adj[to] = [] 
-      adj[to].push(edge)
-    }
+    type === 'undirected' && adj[to].push(edge)
     return adj
-  }, {})
+  }, graph.V.reduce((adj, vertex) => {
+    adj[vertex] = []
+    return adj
+  }, {}))
 })
 
 const deserialize = path => {

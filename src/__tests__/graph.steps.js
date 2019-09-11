@@ -15,7 +15,7 @@ defineParameterType({
 })
 
 let graph
-Given('undirected {string} graph', graphName => {
+Given('{string} graph', graphName => {
   graph = deserialize(`${__dirname}/examples/${graphName}.json`)
 })
 
