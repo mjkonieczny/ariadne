@@ -13,10 +13,10 @@ const iterateArray = (array, data) => {
 
   array.forEach(item => {
     if (marker.includes(item)) {
-      unmarked && unmarked(item)
+      marked && marked(item)
     } else {
       marker.push(item)
-      marked && marked(item)
+      unmarked && unmarked(item)
     }
   })
 }
@@ -44,7 +44,7 @@ const depth = (graph, source, data) => {
   iterate(graph, source, {
     marker,
     unmarked: (vertex, edge) => {
-      unmarked(vertex, edge)
+      unmarked && unmarked(vertex, edge)
       depth(graph, vertex, data)
     },
     marked
@@ -69,7 +69,7 @@ const breadth = (graph, source, data) => {
       marker,
       unmarked: (vertex, edge) => {
         queue.push(vertex)
-        unmarked(vertex, edge)
+        unmarked && unmarked(vertex, edge)
       },
       marked
     })
@@ -114,6 +114,42 @@ const firstPaths = (graph, source, iterator) => {
   }
 }
 
+const depthFirstOrder = graph => {
+  const marker = [], pre = [], post = []
+
+  iterateArray(graph.V, {
+    marker,
+    unmarked: source => {
+      marker.push(source)
+
+      depth(graph, source, {
+        marker,
+        pre: vertex => pre.push(vertex),
+        post: vertex => post.push(vertex)
+      })
+    }
+  })
+
+  return {
+    pre,
+    post,
+    reversePost: post.slice().reverse()
+  }
+}
+
+const topological = graph => {
+  let order = null
+
+  if (!cycles(graph).hasCycle) {
+    order = depthFirstOrder(graph).reversePost
+  }
+
+  return {
+    isDag: order !== null,
+    order
+  }
+}
+
 const cycles = graph => {
   const marker = [], edgeTo = {}
   let onStack = [], cycle = null
@@ -124,12 +160,10 @@ const cycles = graph => {
       unmarked: (vertex, edge) => edgeTo[vertex] = edge,
       marked: (vertex, edge) => {
         if (!cycle && onStack.includes(vertex) && !Object.values(edgeTo).includes(edge)) {
-          const asd = Object.entries(edgeTo).reduce((x, [v, e]) => {
+          cycle = pathTo(Object.entries(edgeTo).reduce((x, [v, e]) => {
             x[v] = other(e, v)
             return x
-          }, {})
-          console.log(asd)
-          cycle = pathTo(asd, vertex, other(edge, vertex))
+          }, {}), vertex, other(edge, vertex))
           cycle.push(vertex)
         }
       },
@@ -151,6 +185,8 @@ const graph = graph => ({
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
   firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
+  depthFirstOrder: () => depthFirstOrder(graph),
+  topological: () => topological(graph),
   cycles: () => cycles(graph)
 })
 

@@ -50,6 +50,25 @@ Parameters
 * target - vertex where path ends
 * iterator - how path will be searched ('breadth' | 'depth')
 
+### Depth first order
+
+```javascript
+const dfo = graph.depthFirstOrder()
+
+dfo.pre
+dfo.post
+dfo.reversePost
+```
+
+### Topological sort
+
+```javascript
+const topological = graph.topological()
+
+dfo.isDag
+dfo.order
+```
+
 ### Cycles
 
 ```javascript

@@ -24,6 +24,16 @@ When('{string} first paths from {int}', (iterator, source) => {
   firstPaths = graph.firstPaths(source, iterator)
 })
 
+let depthFirstOrder
+When('depth first order', () => {
+  depthFirstOrder = graph.depthFirstOrder()
+})
+
+let topological
+When('topological', () => {
+  topological = graph.topological()
+})
+
 let cycles
 When('check cycles', () => {
   cycles = graph.cycles()
@@ -54,8 +64,25 @@ Then('should has path to {int} is {boolean}', (target, expected) => {
 })
 
 Then('path to {int} should be {array}', (target, expected) => {
-  const result = firstPaths.pathTo(target)
-  expected ? expect(result).members(expected) : expect(result).null
+  expected 
+    ? expect(firstPaths.pathTo(target)).members(expected) 
+    : expect(firstPaths.pathTo(target)).null
+})
+
+Then('{string} order is {array}', (order, expected) => {
+  expect(
+    depthFirstOrder[order]
+  ).ordered.members(expected)
+})
+
+Then('is dag is {boolean}', expected => {
+  expect(topological.isDag).equals(expected)
+})
+
+Then('topological order is {array}', expected => {
+  expected
+    ? expect(topological.order).ordered.members(expected)
+    : expect(topological.order).null
 })
 
 Then('has cycle is {boolean}', expected => {
@@ -63,5 +90,7 @@ Then('has cycle is {boolean}', expected => {
 }) 
 
 Then('cycle is {array}', expected => {
-  expect(cycles.cycle).ordered.members(expected)
+  expected
+    ? expect(cycles.cycle).ordered.members(expected)
+    : expect(cycles.cycle).null
 })
