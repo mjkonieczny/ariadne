@@ -39,6 +39,17 @@ Feature: Graph
     And "post" order is 1,4,5,0,3,2,12,10,11,9,6,7,8
     And "reversePost" order is 8,7,6,9,11,10,12,2,3,0,5,4,1
 
+  Scenario Outline: <graphName> topological
+    Given <graphName> graph
+    When topological
+    Then is dag is <isDag>
+    And topological order is <order>
+
+    Examples:
+      | graphName  | isDag | order                        |
+      | "tinyDG"   | false | null                         |
+      | "tinyDGnc" | true  | 8,7,6,9,11,10,12,2,3,0,5,4,1 |
+
   Scenario Outline: <graphName> cycles
     Given <graphName> graph
     When check cycles

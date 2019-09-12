@@ -29,6 +29,11 @@ When('depth first order', () => {
   depthFirstOrder = graph.depthFirstOrder()
 })
 
+let topological
+When('topological', () => {
+  topological = graph.topological()
+})
+
 let cycles
 When('check cycles', () => {
   cycles = graph.cycles()
@@ -68,6 +73,16 @@ Then('{string} order is {array}', (order, expected) => {
   expect(
     depthFirstOrder[order]
   ).ordered.members(expected)
+})
+
+Then('is dag is {boolean}', expected => {
+  expect(topological.isDag).equals(expected)
+})
+
+Then('topological order is {array}', expected => {
+  expected
+    ? expect(topological.order).ordered.members(expected)
+    : expect(topological.order).null
 })
 
 Then('has cycle is {boolean}', expected => {

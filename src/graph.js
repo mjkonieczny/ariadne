@@ -137,6 +137,19 @@ const depthFirstOrder = graph => {
   }
 }
 
+const topological = graph => {
+  let order = null
+
+  if (!cycles(graph).hasCycle) {
+    order = depthFirstOrder(graph).reversePost
+  }
+
+  return {
+    isDag: order !== null,
+    order
+  }
+}
+
 const cycles = graph => {
   const marker = [], edgeTo = {}
   let onStack = [], cycle = null
@@ -173,6 +186,7 @@ const graph = graph => ({
   depth: (source, data) => depth(graph, source, data),
   firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
   depthFirstOrder: () => depthFirstOrder(graph),
+  topological: () => topological(graph),
   cycles: () => cycles(graph)
 })
 
