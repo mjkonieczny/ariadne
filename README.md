@@ -50,6 +50,18 @@ Parameters
 * target - vertex where path ends
 * iterator - how path will be searched ('breadth' | 'depth')
 
+### Degrees of separation
+
+```javascript
+graph.degreeOfSeparation(source, target)
+```
+
+### Transitive closures
+
+```javascript
+graph.transitiveClosures().isReachable(source, target)
+```
+
 ### Depth first order
 
 ```javascript

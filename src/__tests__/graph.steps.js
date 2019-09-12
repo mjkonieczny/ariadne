@@ -24,6 +24,11 @@ When('{string} first paths from {int}', (iterator, source) => {
   firstPaths = graph.firstPaths(source, iterator)
 })
 
+let transitiveClosures
+When('transitive closures', () => {
+  transitiveClosures = graph.transitiveClosures()
+})
+
 let depthFirstOrder
 When('depth first order', () => {
   depthFirstOrder = graph.depthFirstOrder()
@@ -93,4 +98,13 @@ Then('cycle is {array}', expected => {
   expected
     ? expect(cycles.cycle).ordered.members(expected)
     : expect(cycles.cycle).null
+})
+
+Then('degree of separation between {int} and {int} is {int}', (source, target, expected) => {
+  expect(graph.degreeOfSeparation(source, target)).equals(expected)
+})
+
+Then('from {int} {array} are reachable and {array} are not', (source, reachable, notReachable) =>{
+  reachable && reachable.forEach(target => expect(transitiveClosures.isReachable(source, target)).to.be.true)
+  notReachable && notReachable.forEach(target => expect(transitiveClosures.isReachable(source, target)).to.be.false)
 })
