@@ -122,6 +122,17 @@ const degreeOfSeparation = (graph, source, target) => {
     : -1
 } 
 
+const transitiveClosures = graph => {
+  const closures = graph.V.reduce((agg, vertex) => {
+    agg[vertex] = firstPaths(graph, vertex, 'depth')
+    return agg
+  }, {})
+
+  return {
+    isReachable: (source, target) => closures[source].hasPathTo(target)
+  }
+}
+
 const depthFirstOrder = graph => {
   const marker = [], pre = [], post = []
 
@@ -194,6 +205,7 @@ const graph = graph => ({
   depth: (source, data) => depth(graph, source, data),
   firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
   degreeOfSeparation: (source, target) => degreeOfSeparation(graph, source, target),
+  transitiveClosures: () => transitiveClosures(graph),
   depthFirstOrder: () => depthFirstOrder(graph),
   topological: () => topological(graph),
   cycles: () => cycles(graph)

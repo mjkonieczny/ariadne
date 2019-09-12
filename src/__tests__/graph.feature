@@ -32,7 +32,7 @@ Feature: Graph
       | "tinyDG"  | "depth"   | 0      | 3      | true    | 0,5,4,2,3 |
       | "tinyDG"  | "depth"   | 2      | 7      | false   | null      |
 
-  Scenario Outline: degree of separation between <source> and <target>
+  Scenario Outline: <graphName> degree of separation between <source> and <target>
     Given <graphName> graph
     Then degree of separation between <source> and <target> is <degreeOfSeparation>
 
@@ -44,6 +44,18 @@ Feature: Graph
       | "tinyDG"  | 0      | 12     | -1                 |
       | "tinyDG"  | 12     | 0      | 5                  |
       | "tinyDG"  | 8      | 1      | 3                  |
+
+  Scenario Outline: transitive closures between <source> and <target>
+    Given "tinyDG" graph
+    When transitive closures
+    Then from <source> <reachable> are reachable and <notReachable> are not
+
+    Examples:
+      | source | reachable                  | notReachable               |
+      | 1      | null                       | 0,2,3,4,5,6,7,8,9,10,11,12 |
+      | 2      | 0,1,3,4,5                  | 6,7,8,9,10,11,12           |
+      | 6      | 0,1,2,3,4,5,8,9,10,11,12   | 7                          |
+      | 7      | 0,1,2,3,4,5,6,8,9,10,11,12 | null                       |
 
   Scenario: depth first order
     Given "tinyDGnc" graph
