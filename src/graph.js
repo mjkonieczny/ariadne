@@ -8,6 +8,19 @@ const adjacent = (graph, vertex) => {
   return edges(graph, vertex).map(edge => other(edge, vertex))
 }
 
+const iterateArray = (array, data) => {
+  const { marker, unmarked, marked } = data
+
+  array.forEach(item => {
+    if (marker.includes(item)) {
+      unmarked && unmarked(item)
+    } else {
+      marker.push(item)
+      marked && marked(item)
+    }
+  })
+}
+
 const iterate = (graph, vertex, data) => {
   const { marker, unmarked, marked } = data
 
@@ -27,7 +40,6 @@ const depth = (graph, source, data) => {
   const { marker, unmarked, marked, pre, post } = data
 
   pre && pre(source)
-  marker.push(source)
 
   iterate(graph, source, {
     marker,
@@ -102,13 +114,44 @@ const firstPaths = (graph, source, iterator) => {
   }
 }
 
+const cycles = graph => {
+  const marker = [], edgeTo = {}
+  let onStack = [], cycle = null
+
+  graph.V.forEach(source => {
+    depth(graph, source, {
+      marker,
+      unmarked: (vertex, edge) => edgeTo[vertex] = edge,
+      marked: (vertex, edge) => {
+        if (!cycle && onStack.includes(vertex) && !Object.values(edgeTo).includes(edge)) {
+          const asd = Object.entries(edgeTo).reduce((x, [v, e]) => {
+            x[v] = other(e, v)
+            return x
+          }, {})
+          console.log(asd)
+          cycle = pathTo(asd, vertex, other(edge, vertex))
+          cycle.push(vertex)
+        }
+      },
+      pre: vertex => onStack.push(vertex),
+      post: vertex => onStack = onStack.filter(v => v !== vertex)
+    })
+  }) 
+
+  return {
+    hasCycle: Boolean(cycle),
+    cycle
+  }
+}
+
 const graph = graph => ({
   ...graph,
   adjacent: vertex => adjacent(graph, vertex),
   edges: vertex => edges(graph, vertex),
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
-  firstPaths: (source, iterator) => firstPaths(graph, source, iterator)
+  firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
+  cycles: () => cycles(graph)
 })
 
 export default graph
