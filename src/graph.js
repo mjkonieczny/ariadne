@@ -13,10 +13,10 @@ const iterateArray = (array, data) => {
 
   array.forEach(item => {
     if (marker.includes(item)) {
-      unmarked && unmarked(item)
+      marked && marked(item)
     } else {
       marker.push(item)
-      marked && marked(item)
+      unmarked && unmarked(item)
     }
   })
 }
@@ -117,9 +117,11 @@ const firstPaths = (graph, source, iterator) => {
 const depthFirstOrder = graph => {
   const marker = [], pre = [], post = []
 
-  graph.V.forEach(source => {
-    if (!marker.includes(source)) {
+  iterateArray(graph.V, {
+    marker,
+    unmarked: source => {
       marker.push(source)
+
       depth(graph, source, {
         marker,
         pre: vertex => pre.push(vertex),
