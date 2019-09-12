@@ -8,6 +8,19 @@ const adjacent = (graph, vertex) => {
   return edges(graph, vertex).map(edge => other(edge, vertex))
 }
 
+const iterateArray = (array, data) => {
+  const { marker, unmarked, marked } = data
+
+  array.forEach(item => {
+    if (marker.includes(item)) {
+      marked && marked(item)
+    } else {
+      marker.push(item)
+      unmarked && unmarked(item)
+    }
+  })
+}
+
 const iterate = (graph, vertex, data) => {
   const { marker, unmarked, marked } = data
 
@@ -27,12 +40,11 @@ const depth = (graph, source, data) => {
   const { marker, unmarked, marked, pre, post } = data
 
   pre && pre(source)
-  marker.push(source)
 
   iterate(graph, source, {
     marker,
     unmarked: (vertex, edge) => {
-      unmarked(vertex, edge)
+      unmarked && unmarked(vertex, edge)
       depth(graph, vertex, data)
     },
     marked
@@ -57,7 +69,7 @@ const breadth = (graph, source, data) => {
       marker,
       unmarked: (vertex, edge) => {
         queue.push(vertex)
-        unmarked(vertex, edge)
+        unmarked && unmarked(vertex, edge)
       },
       marked
     })
@@ -110,6 +122,70 @@ const degreeOfSeparation = (graph, source, target) => {
     : -1
 } 
 
+const depthFirstOrder = graph => {
+  const marker = [], pre = [], post = []
+
+  iterateArray(graph.V, {
+    marker,
+    unmarked: source => {
+      marker.push(source)
+
+      depth(graph, source, {
+        marker,
+        pre: vertex => pre.push(vertex),
+        post: vertex => post.push(vertex)
+      })
+    }
+  })
+
+  return {
+    pre,
+    post,
+    reversePost: post.slice().reverse()
+  }
+}
+
+const topological = graph => {
+  let order = null
+
+  if (!cycles(graph).hasCycle) {
+    order = depthFirstOrder(graph).reversePost
+  }
+
+  return {
+    isDag: order !== null,
+    order
+  }
+}
+
+const cycles = graph => {
+  const marker = [], edgeTo = {}
+  let onStack = [], cycle = null
+
+  graph.V.forEach(source => {
+    depth(graph, source, {
+      marker,
+      unmarked: (vertex, edge) => edgeTo[vertex] = edge,
+      marked: (vertex, edge) => {
+        if (!cycle && onStack.includes(vertex) && !Object.values(edgeTo).includes(edge)) {
+          cycle = pathTo(Object.entries(edgeTo).reduce((x, [v, e]) => {
+            x[v] = other(e, v)
+            return x
+          }, {}), vertex, other(edge, vertex))
+          cycle.push(vertex)
+        }
+      },
+      pre: vertex => onStack.push(vertex),
+      post: vertex => onStack = onStack.filter(v => v !== vertex)
+    })
+  }) 
+
+  return {
+    hasCycle: Boolean(cycle),
+    cycle
+  }
+}
+
 const graph = graph => ({
   ...graph,
   adjacent: vertex => adjacent(graph, vertex),
@@ -117,7 +193,10 @@ const graph = graph => ({
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
   firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
-  degreeOfSeparation: (source, target) => degreeOfSeparation(graph, source, target)
+  degreeOfSeparation: (source, target) => degreeOfSeparation(graph, source, target),
+  depthFirstOrder: () => depthFirstOrder(graph),
+  topological: () => topological(graph),
+  cycles: () => cycles(graph)
 })
 
 export default graph
