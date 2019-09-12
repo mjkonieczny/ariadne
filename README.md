@@ -50,5 +50,14 @@ Parameters
 * target - vertex where path ends
 * iterator - how path will be searched ('breadth' | 'depth')
 
+### Cycles
+
+```javascript
+const cycles = graph.cycles()
+
+cycles.hasCycle()
+cycles.cycle
+```
+
 # Sources
 https://algs4.cs.princeton.edu/home/

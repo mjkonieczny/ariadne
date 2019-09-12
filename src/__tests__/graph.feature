@@ -11,7 +11,7 @@ Feature: Graph
       | "tinyG"   | 13 | 13 | 3,5,6    |
       | "tinyEWG" | 8  | 16 | 0,5,6,7  |
 
-  Scenario Outline: <iterator> first paths from <source> to <target>
+  Scenario Outline: <graphName> <iterator> first paths from <source> to <target>
     Given <graphName> graph
     When <iterator> first paths from <source>
     Then should has path to <target> is <hasPath>
@@ -31,3 +31,15 @@ Feature: Graph
       | "tinyDG"  | "depth"   | 2      | 1      | true    | 2,0,1     |
       | "tinyDG"  | "depth"   | 0      | 3      | true    | 0,5,4,2,3 |
       | "tinyDG"  | "depth"   | 2      | 7      | false   | null      |
+
+  Scenario Outline: <graphName> cycles
+    Given <graphName> graph
+    When check cycles
+    Then has cycle is <hasCycle>
+    And cycle is <cycle>
+
+    Examples:
+      | graphName  | hasCycle | cycle       |
+      | "tinyG"    | true     | 5,0,6,4,3,5 |
+      | "tinyDG"   | true     | 2,3,2       |
+      | "tinyDGnc" | false    | null        |
