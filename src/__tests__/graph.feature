@@ -99,3 +99,12 @@ Feature: Graph
       | "tinyDG"   | true     | 2,3,2       |
       | "tinyDGnc" | false    | null        |
 
+  Scenario Outline: <graphName> <order> coherent components
+    Given <graphName> graph
+    When <order> coherent components
+    Then components should be <coherentComponents>
+
+    Examples:
+      | graphName | order      | coherentComponents                              |
+      | "tinyG"   | "ordinary" | [0,1,2,3,4,5,6] , [7,8] , [9,10,11,12]          |
+      | "tinyDG"  | "kosaraju" | [0,2,3,4,5] , [1] , [6, 8] , [7] , [9,10,11,12] |

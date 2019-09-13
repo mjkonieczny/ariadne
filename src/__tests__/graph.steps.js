@@ -1,11 +1,20 @@
 import { Given, When, Then, defineParameterType } from 'cucumber'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
+import deepEqualInAnyOrder from 'deep-equal-in-any-order'
 import { deserialize } from '../graphSerializer'
+
+chai.use(deepEqualInAnyOrder)
 
 defineParameterType({
   name: 'array',
   regexp: /((?:\d+,)*\d+)|null/,
   transformer: string => string ? string.split(',').map(Number) : null
+})
+
+defineParameterType({
+  name: 'arrayOfArrays',
+  regexp: /.*/,
+  transformer: string => string.split(' , ').map(array => array.slice(1, -1).split(',').map(Number))
 })
 
 defineParameterType({
@@ -46,6 +55,11 @@ When('topological', () => {
 let cycles
 When('check cycles', () => {
   cycles = graph.cycles()
+})
+
+let coherentComponents
+When('{string} coherent components', order => {
+  coherentComponents = graph.coherentComponents(order)
 })
 
 Then('should have {int} vertices', expected => {
@@ -111,4 +125,8 @@ Then('degree of separation between {int} and {int} is {int}', (source, target, e
 Then('from {int} {array} are reachable and {array} are not', (source, reachable, notReachable) =>{
   reachable && reachable.forEach(target => expect(transitiveClosures.isReachable(source, target)).to.be.true)
   notReachable && notReachable.forEach(target => expect(transitiveClosures.isReachable(source, target)).to.be.false)
+})
+
+Then ('components should be {arrayOfArrays}', expected => {
+  expect(coherentComponents.coherentComponents).deep.equalInAnyOrder(expected)
 })

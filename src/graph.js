@@ -145,7 +145,7 @@ const degreeOfSeparation = (graph, source, target) => {
   return result.hasPathTo(target)
     ? result.pathTo(target).length - 1
     : -1
-} 
+}
 
 const transitiveClosures = graph => {
   const closures = graph.V.reduce((agg, vertex) => {
@@ -214,11 +214,42 @@ const cycles = graph => {
       pre: vertex => onStack.push(vertex),
       post: vertex => onStack = onStack.filter(v => v !== vertex)
     })
-  }) 
+  })
 
   return {
     hasCycle: Boolean(cycle),
     cycle
+  }
+}
+
+const coherentComponents = (graph, order) => {
+  let vertices = null
+
+  switch (order) {
+  case 'ordinary': vertices = graph.V
+    break
+  case 'kosaraju': vertices = depthFirstOrder(reverse(graph)).reversePost
+    break
+  }
+
+  const coherentComponents = [], marker = []
+
+  iterateArray(vertices, {
+    marker,
+    unmarked: (vertex => {
+      const component = []
+
+      depth(graph, vertex, {
+        marker,
+        pre: v => component.push(v)
+      })
+
+      coherentComponents.push(component)
+    })
+  })
+
+  return {
+    coherentComponents
   }
 }
 
@@ -234,7 +265,8 @@ const graph = graph => ({
   transitiveClosures: () => transitiveClosures(graph),
   depthFirstOrder: () => depthFirstOrder(graph),
   topological: () => topological(graph),
-  cycles: () => cycles(graph)
+  cycles: () => cycles(graph),
+  coherentComponents: order => coherentComponents(graph, order)
 })
 
 export default graph
