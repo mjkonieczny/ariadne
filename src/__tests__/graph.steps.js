@@ -19,6 +19,10 @@ Given('{string} graph', graphName => {
   graph = deserialize(`${__dirname}/examples/${graphName}.json`)
 })
 
+When('reverse', () => {
+  graph = graph.reverse()
+})
+
 let firstPaths
 When('{string} first paths from {int}', (iterator, source) => {
   firstPaths = graph.firstPaths(source, iterator)

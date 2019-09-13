@@ -11,6 +11,18 @@ Feature: Graph
       | "tinyG"   | 13 | 13 | 3,5,6    |
       | "tinyEWG" | 8  | 16 | 0,5,6,7  |
 
+  Scenario Outline: <graphName> reverse
+    Given <graphName> graph
+    When reverse
+    Then should have <v> vertices
+    And should have <e> edges
+    And adjacent of vertex 4 should be <adjacent>
+
+    Examples:
+      | graphName | v  | e  | adjacent |
+      | "tinyG"   | 13 | 13 | 3,5,6    |
+      | "tinyDG"  | 13 | 22 | 5,6,11   |
+
   Scenario Outline: <graphName> <iterator> first paths from <source> to <target>
     Given <graphName> graph
     When <iterator> first paths from <source>

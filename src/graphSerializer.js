@@ -1,17 +1,5 @@
 import fs from 'fs'
-import graph from './graph'
-
-const adj = graph => ({
-  ...graph,
-  adj: Object.entries(graph.phi).reduce((adj, [edge, { from, to, type }]) => {
-    adj[from].push(edge)
-    type === 'undirected' && adj[to].push(edge)
-    return adj
-  }, graph.V.reduce((adj, vertex) => {
-    adj[vertex] = []
-    return adj
-  }, {}))
-})
+import graph, { adj } from './graph'
 
 const deserialize = path => {
   const buffer = fs.readFileSync(path, (err, buffer) => {
