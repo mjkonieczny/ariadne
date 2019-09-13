@@ -11,6 +11,18 @@ Feature: Graph
       | "tinyG"   | 13 | 13 | 3,5,6    |
       | "tinyEWG" | 8  | 16 | 0,5,6,7  |
 
+  Scenario Outline: <graphName> reverse
+    Given <graphName> graph
+    When reverse
+    Then should have <v> vertices
+    And should have <e> edges
+    And adjacent of vertex 4 should be <adjacent>
+
+    Examples:
+      | graphName | v  | e  | adjacent |
+      | "tinyG"   | 13 | 13 | 3,5,6    |
+      | "tinyDG"  | 13 | 22 | 5,6,11   |
+
   Scenario Outline: <graphName> <iterator> first paths from <source> to <target>
     Given <graphName> graph
     When <iterator> first paths from <source>
@@ -87,3 +99,12 @@ Feature: Graph
       | "tinyDG"   | true     | 2,3,2       |
       | "tinyDGnc" | false    | null        |
 
+  Scenario Outline: <graphName> <order> coherent components
+    Given <graphName> graph
+    When <order> coherent components
+    Then components should be <coherentComponents>
+
+    Examples:
+      | graphName | order      | coherentComponents                              |
+      | "tinyG"   | "ordinary" | [0,1,2,3,4,5,6] , [7,8] , [9,10,11,12]          |
+      | "tinyDG"  | "kosaraju" | [0,2,3,4,5] , [1] , [6, 8] , [7] , [9,10,11,12] |

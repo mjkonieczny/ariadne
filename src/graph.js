@@ -1,5 +1,17 @@
 import { other } from './edge'
 
+export const adj = graph => ({
+  ...graph,
+  adj: Object.entries(graph.phi).reduce((adj, [edge, { from, to, type }]) => {
+    adj[from].push(edge)
+    type === 'undirected' && adj[to].push(edge)
+    return adj
+  }, graph.V.reduce((adj, vertex) => {
+    adj[vertex] = []
+    return adj
+  }, {}))
+})
+
 const edges = (graph, vertex) => {
   return graph.adj[vertex].map(v => graph.phi[v])
 }
@@ -34,6 +46,19 @@ const iterate = (graph, vertex, data) => {
       unmarked && unmarked(to, edge)
     }
   })
+}
+
+const reverse = g => {
+  const reversed = {
+    V: g.V,
+    E: g.E,
+    phi: Object.entries(g.phi).reduce((phi, [edge, { from, to, type }]) => {
+      phi[edge] = { from: to, to: from, type }
+      return phi
+    }, {})
+  }
+
+  return graph(adj(reversed))
 }
 
 const depth = (graph, source, data) => {
@@ -120,7 +145,7 @@ const degreeOfSeparation = (graph, source, target) => {
   return result.hasPathTo(target)
     ? result.pathTo(target).length - 1
     : -1
-} 
+}
 
 const transitiveClosures = graph => {
   const closures = graph.V.reduce((agg, vertex) => {
@@ -189,7 +214,7 @@ const cycles = graph => {
       pre: vertex => onStack.push(vertex),
       post: vertex => onStack = onStack.filter(v => v !== vertex)
     })
-  }) 
+  })
 
   return {
     hasCycle: Boolean(cycle),
@@ -197,9 +222,41 @@ const cycles = graph => {
   }
 }
 
+const coherentComponents = (graph, order) => {
+  let vertices = null
+
+  switch (order) {
+  case 'ordinary': vertices = graph.V
+    break
+  case 'kosaraju': vertices = depthFirstOrder(reverse(graph)).reversePost
+    break
+  }
+
+  const coherentComponents = [], marker = []
+
+  iterateArray(vertices, {
+    marker,
+    unmarked: (vertex => {
+      const component = []
+
+      depth(graph, vertex, {
+        marker,
+        pre: v => component.push(v)
+      })
+
+      coherentComponents.push(component)
+    })
+  })
+
+  return {
+    coherentComponents
+  }
+}
+
 const graph = graph => ({
   ...graph,
   adjacent: vertex => adjacent(graph, vertex),
+  reverse: () => reverse(graph),
   edges: vertex => edges(graph, vertex),
   iterate: (vertex, data) => iterate(graph, vertex, data),
   depth: (source, data) => depth(graph, source, data),
@@ -208,7 +265,8 @@ const graph = graph => ({
   transitiveClosures: () => transitiveClosures(graph),
   depthFirstOrder: () => depthFirstOrder(graph),
   topological: () => topological(graph),
-  cycles: () => cycles(graph)
+  cycles: () => cycles(graph),
+  coherentComponents: order => coherentComponents(graph, order)
 })
 
 export default graph

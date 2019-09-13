@@ -1102,6 +1102,14 @@ deep-eql@^3.0.1:
   dependencies:
     type-detect "^4.0.0"
 
+deep-equal-in-any-order@^1.0.21:
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.0.21.tgz#3d357e22caa894507210c42108a5e0cd162375b5"
+  integrity sha512-hIWy3f/G54z9He08FGWIxAm4XmBRVax/tf8HI+9mNXJeDq7B/JUXcdBKTspQcBYAZoUTg5ipZtznEi1/Qv0nxQ==
+  dependencies:
+    lodash "^4.17.15"
+    sort-any "^1.1.19"
+
 deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
@@ -1823,7 +1831,7 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -2480,6 +2488,13 @@ slice-ansi@^2.1.0:
     ansi-styles "^3.2.0"
     astral-regex "^1.0.0"
     is-fullwidth-code-point "^2.0.0"
+
+sort-any@^1.1.19:
+  version "1.1.19"
+  resolved "https://registry.yarnpkg.com/sort-any/-/sort-any-1.1.19.tgz#028488cc2340e7cca6da85fd4c0f9270c9798320"
+  integrity sha512-RbbHSbTg7b9K+89nj/Fyv7WpGMAIEvqvmS6B3RzsSIVn0eDpCWJuvLGB8vjCisLtWeN3FYwfYg5EGEQO+oOtvQ==
+  dependencies:
+    lodash "^4.17.15"
 
 source-map-support@^0.5.9:
   version "0.5.13"

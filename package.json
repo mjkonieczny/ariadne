@@ -30,6 +30,7 @@
   "homepage": "https://github.com/matthew-the-equine/thezeus#readme",
   "dependencies": {
     "chai": "^4.2.0",
-    "cucumber": "^5.1.0"
+    "cucumber": "^5.1.0",
+    "deep-equal-in-any-order": "^1.0.21"
   }
 }
