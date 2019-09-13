@@ -90,5 +90,16 @@ cycles.hasCycle()
 cycles.cycle
 ```
 
+### Coherent components
+
+```javascript
+const cc = graph.coherentComponents(order)
+
+cc.coherentComponents
+```
+
+Parameters:
+* order ('ordinary' | 'kosaraju')
+
 # Sources
 https://algs4.cs.princeton.edu/home/
