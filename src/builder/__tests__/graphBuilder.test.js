@@ -12,9 +12,11 @@ describe('graph builder', () => {
     const build = builder(graph)
 
     // when
-    build.addVertex(1)
+    build
+      .addVertex(1)
+      .addVertex(2)
 
     // then
-    expect(graph.V).members([1])
+    expect(graph.V).members([1, 2])
   })
 })
