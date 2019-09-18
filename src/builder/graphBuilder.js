@@ -1,8 +1,22 @@
-const builder = graph => ({
-  addVertex: vertex => {
-    graph.V.push(vertex)
-    graph.adj[vertex] = []
+const addVertex = (graph, vertex) => {
+  graph.V.push(vertex)
+  graph.adj[vertex] = []
+}
 
+const emptyGraph = {
+  V: [],
+  E: [],
+  phi: {},
+  adj: {}
+}
+
+const builder = (graph = JSON.parse(JSON.stringify(emptyGraph))) => ({
+  addVertex: vertex => {
+    addVertex(graph, vertex)
+    return builder(graph)
+  },
+  addVertices: (...vertices) => {
+    vertices.forEach(v => addVertex(graph, v))
     return builder(graph)
   },
   addEdge: (edge, from, to, type) => {
@@ -12,7 +26,8 @@ const builder = graph => ({
     type === 'undirected' && graph.adj[to].push(edge)
 
     return builder(graph)
-  }
+  },
+  build: () => graph
 })
 
 export default builder
