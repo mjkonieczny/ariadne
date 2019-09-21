@@ -253,6 +253,10 @@ const coherentComponents = (graph, order) => {
   }
 }
 
+const containsVertex = (graph, vertex) => graph.V.includes(vertex)
+
+const containsEdge = (graph, edge) => graph.E.includes(edge)
+
 const decorateGraph = graph => {
   const g = adj(graph)
   return {
@@ -268,7 +272,9 @@ const decorateGraph = graph => {
     depthFirstOrder: () => depthFirstOrder(g),
     topological: () => topological(g),
     cycles: () => cycles(g),
-    coherentComponents: order => coherentComponents(g, order)
+    coherentComponents: order => coherentComponents(g, order),
+    containsVertex: vertex => containsVertex(g, vertex),
+    containsEdge: edge => containsEdge(g, edge)
   }
 }
 
