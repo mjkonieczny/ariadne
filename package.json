@@ -14,7 +14,7 @@
     "mocha": "^6.2.0"
   },
   "scripts": {
-    "lint": "eslint **/*.js --ignore-pattern node_modules/",
+    "lint": "eslint '**/*.js' --ignore-pattern node_modules/",
     "test": "yarn test-mocha && yarn test-gherkin",
     "test-gherkin": "./node_modules/.bin/cucumber-js --require-module @babel/register ./src/**/*.feature",
     "test-mocha": "mocha ./src/**/*.test.* --require @babel/register"
