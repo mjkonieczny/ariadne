@@ -10,6 +10,11 @@ export const shouldContainVertex = (graph, vertex) => {
   }
 }
 
+export const shouldContainVertices = (graph, { from, to }) => {
+  shouldContainVertex(graph, from)
+  shouldContainVertex(graph, to)
+}
+
 export const shouldNotContainEdge = (graph, { edge }) => {
   if (graph.containsEdge(edge)) {
     throwItemError('Graph already contains edge', edge)
