@@ -1,5 +1,20 @@
 # Thezeus
 
+## Builder
+
+```javascript
+const graph = builder()
+  .addVertex(1)
+  .addVertices(2, 3, 4)
+  .addEdge(1, 1, 2, 'undirected')
+  .addEdge(2, 3, 4, 'directed')
+  .build()
+```
+Methods
+* addVertex - adds one vertex
+* addVertices - adds collection of vertices
+* addEdge - adds edge _[edge, from, to, type]_
+
 ## Iterators
 
 ### Breadth

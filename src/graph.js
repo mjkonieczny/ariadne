@@ -3,8 +3,8 @@ import { other } from './edge'
 export const adj = graph => ({
   ...graph,
   adj: Object.entries(graph.phi).reduce((adj, [edge, { from, to, type }]) => {
-    adj[from].push(edge)
-    type === 'undirected' && adj[to].push(edge)
+    adj[from].push(Number(edge))
+    type === 'undirected' && adj[to].push(Number(edge))
     return adj
   }, graph.V.reduce((adj, vertex) => {
     adj[vertex] = []
@@ -58,7 +58,7 @@ const reverse = g => {
     }, {})
   }
 
-  return graph(adj(reversed))
+  return decorateGraph(reversed)
 }
 
 const depth = (graph, source, data) => {
@@ -253,20 +253,23 @@ const coherentComponents = (graph, order) => {
   }
 }
 
-const graph = graph => ({
-  ...graph,
-  adjacent: vertex => adjacent(graph, vertex),
-  reverse: () => reverse(graph),
-  edges: vertex => edges(graph, vertex),
-  iterate: (vertex, data) => iterate(graph, vertex, data),
-  depth: (source, data) => depth(graph, source, data),
-  firstPaths: (source, iterator) => firstPaths(graph, source, iterator),
-  degreeOfSeparation: (source, target) => degreeOfSeparation(graph, source, target),
-  transitiveClosures: () => transitiveClosures(graph),
-  depthFirstOrder: () => depthFirstOrder(graph),
-  topological: () => topological(graph),
-  cycles: () => cycles(graph),
-  coherentComponents: order => coherentComponents(graph, order)
-})
+const decorateGraph = graph => {
+  const g = adj(graph)
+  return {
+    ...g,
+    adjacent: vertex => adjacent(g, vertex),
+    reverse: () => reverse(g),
+    edges: vertex => edges(g, vertex),
+    iterate: (vertex, data) => iterate(g, vertex, data),
+    depth: (source, data) => depth(g, source, data),
+    firstPaths: (source, iterator) => firstPaths(g, source, iterator),
+    degreeOfSeparation: (source, target) => degreeOfSeparation(g, source, target),
+    transitiveClosures: () => transitiveClosures(g),
+    depthFirstOrder: () => depthFirstOrder(g),
+    topological: () => topological(g),
+    cycles: () => cycles(g),
+    coherentComponents: order => coherentComponents(g, order)
+  }
+}
 
-export default graph
+export default decorateGraph

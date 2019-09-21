@@ -15,8 +15,9 @@
   },
   "scripts": {
     "lint": "eslint **/*.js --ignore-pattern node_modules/",
-    "test": "yarn gherkin",
-    "gherkin": "./node_modules/.bin/cucumber-js --require-module @babel/register ./src/__tests__"
+    "test": "yarn test-mocha && yarn test-gherkin",
+    "test-gherkin": "./node_modules/.bin/cucumber-js --require-module @babel/register ./src/**/*.feature",
+    "test-mocha": "mocha ./src/**/*.test.* --require @babel/register"
   },
   "repository": {
     "type": "git",

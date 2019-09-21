@@ -2,6 +2,7 @@ import { Given, When, Then, defineParameterType } from 'cucumber'
 import chai, { expect } from 'chai'
 import deepEqualInAnyOrder from 'deep-equal-in-any-order'
 import { deserialize } from '../graphSerializer'
+import decorateGraph from '../graph'
 
 chai.use(deepEqualInAnyOrder)
 
@@ -25,7 +26,7 @@ defineParameterType({
 
 let graph
 Given('{string} graph', graphName => {
-  graph = deserialize(`${__dirname}/examples/${graphName}.json`)
+  graph = decorateGraph(deserialize(`${__dirname}/../../examples/${graphName}.json`))
 })
 
 When('reverse', () => {
