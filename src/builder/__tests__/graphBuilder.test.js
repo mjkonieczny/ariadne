@@ -1,7 +1,8 @@
-import { expect } from 'chai'
+import { expect, assert } from 'chai'
 import builder from '../graphBuilder'
 import { deserialize } from '../../graphSerializer'
 import { adj } from '../../graph'
+import { validators } from '../../validators/graphValidator'
 
 describe('graph builder', () => {
   it('should add vertex', () => {
@@ -24,13 +25,13 @@ describe('graph builder', () => {
     it('should add edge', () => {
 
       // when
-      const grapha = builder()
+      const graph = builder()
         .addVertices(1, 2)
         .addEdge(1, 1, 2, type)
         .build()
 
       // then
-      expect(grapha).eqls({
+      expect(graph).deep.includes({
         V: [1, 2],
         E: [1],
         phi: {
@@ -64,6 +65,56 @@ describe('graph builder', () => {
       .build()
 
     //then
-    expect(graph).eqls(expected)
+    expect(graph).deep.includes(expected)
+  })
+
+  describe('validator fails', () => {
+    it('should fail when vertex not exist', () => {
+      // given
+      const builderFunc = () => builder()
+        .addEdge(1, 1, 2, 'directed')
+        .build()
+
+      // when & then
+      assert.throws(builderFunc, Error, 'Graph does not contain vertex (1)')
+    })
+
+    it('should fail when add the same edge', () => {
+      // given
+      const builderFunc = () => builder()
+        .withValidator(validators.simple)
+        .addVertices(1, 2)
+        .addEdge(1, 1, 2, 'directed')
+        .addEdge(1, 2, 1, 'directed')
+        .build()
+
+      // when & then
+      assert.throws(builderFunc, Error, 'Graph already contains edge (1)')
+    })
+
+    it('should fail when adding self loop', () => {
+      // given
+      const builderFunc = () => builder()
+        .withValidator(validators.simple)
+        .addVertices(1, 2)
+        .addEdge(1, 1, 1, 'directed')
+        .build()
+
+      // when & then
+      assert.throws(builderFunc, Error, 'Graph should not contain self loops (1)')
+    })
+
+    it('should fail when adding parallel edge', () => {
+      // given
+      const builderFunc = () => builder()
+        .withValidator(validators.simple)
+        .addVertices(1, 2)
+        .addEdge(1, 1, 2, 'directed')
+        .addEdge(2, 1, 2, 'directed')
+        .build()
+
+      // when & then
+      assert.throws(builderFunc, Error, 'Graph should not parallel edges (2)')
+    })
   })
 })
