@@ -15,6 +15,26 @@ Methods
 * addVertices - adds collection of vertices
 * addEdge - adds edge _[edge, from, to, type]_
 
+### Validators
+Every builder can use validator to determine correctness of added edge
+```javascript
+const graph = builder()
+  .withValidator(validators.simple)
+  .addVertices(1, 2)
+  .addEdge(1, 1, 2, 'directed')
+  .addEdge(2, 1, 2, 'directed')
+  .build()
+```
+
+Predefined validators:
+  - _normal_
+    - should contain vertices
+    - should not contain edge
+  - _simple_
+    - ..._normal_
+    - should not contain self loops
+    - should not contain parallel edges
+
 ## Iterators
 
 ### Breadth
