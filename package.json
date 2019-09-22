@@ -11,13 +11,15 @@
     "babel-eslint": "^10.0.2",
     "eslint": "^6.1.0",
     "husky": "^3.0.5",
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1"
   },
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern node_modules/",
     "test": "yarn test-mocha && yarn test-gherkin",
     "test-gherkin": "./node_modules/.bin/cucumber-js --require-module @babel/register ./src/**/*.feature",
-    "test-mocha": "mocha ./src/**/*.test.* --require @babel/register"
+    "test-mocha": "mocha ./src/**/*.test.* --require @babel/register",
+    "coverage": "nyc mocha ./src/**/*.test.js --require @babel/register"
   },
   "repository": {
     "type": "git",
