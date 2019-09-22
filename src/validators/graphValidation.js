@@ -1,11 +1,11 @@
 export const shouldNotContainVertex = (graph, vertex) => {
-  if (graph.ContainsVertex(vertex)) {
+  if (graph.containsVertex(vertex)) {
     throwItemError('Graph already contains vertex', vertex)
   }
 }
 
 export const shouldContainVertex = (graph, vertex) => {
-  if (!graph.ContainsVertex(vertex)) {
+  if (!graph.containsVertex(vertex)) {
     throwItemError('Graph does not contain vertex', vertex)
   }
 }
