@@ -2,7 +2,8 @@ import {
   shouldContainVertices,
   shouldNotContainEdge,
   shouldNotContainSelfLoops,
-  shouldNotContainParallelEdges
+  shouldNotContainParallelEdges,
+  shouldNotHasCycle
 } from './graphValidation'
 
 const validator = validations => ({
@@ -22,9 +23,15 @@ const simpleGraphValidations = [
   shouldNotContainParallelEdges
 ]
 
+const treeValidations = [
+  ...simpleGraphValidations,
+  shouldNotHasCycle
+]
+
 export const validators = {
   normal: validator(normalGraphValidations),
-  simple: validator(simpleGraphValidations)
+  simple: validator(simpleGraphValidations),
+  tree: validator(treeValidations)
 }
 
 export default validator
