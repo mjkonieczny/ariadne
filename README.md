@@ -34,6 +34,9 @@ Predefined validators:
     - ..._normal_
     - should not contain self loops
     - should not contain parallel edges
+  - tree
+    - ..._simple_
+    - should not has cycle
 
 ## Iterators
 
