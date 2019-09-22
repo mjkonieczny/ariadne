@@ -33,6 +33,12 @@ export const shouldNotContainParallelEdges = (graph, { edge, from, to }) => {
   }
 }
 
+export const shouldNotHasCycle = (graph, { edge, from, to }) => {
+  if (graph.firstPaths(to, 'depth').hasPathTo(from)) {
+    throwItemError('Graph should not has cycle', edge)
+  }
+}
+
 const throwItemError = (message, item) => {
   throw new Error(`${message} (${item})`)
 }

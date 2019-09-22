@@ -116,5 +116,18 @@ describe('graph builder', () => {
       // when & then
       assert.throws(builderFunc, Error, 'Graph should not parallel edges (2)')
     })
+
+    it('should fail when adding cycle', () => {
+      // given
+      const builderFunc = () => builder()
+        .withValidator(validators.tree)
+        .addVertices(1, 2)
+        .addEdge(1, 1, 2, 'directed')
+        .addEdge(2, 2, 1, 'directed')
+        .build()
+
+      // when & then
+      assert.throws(builderFunc, Error, 'Graph should not has cycle (2)')
+    })
   })
 })
